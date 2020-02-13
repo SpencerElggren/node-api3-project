@@ -30,32 +30,32 @@ function validatePost(req, res, next) {
     }
 }
 
-server.get('/api/users', (req, res) => {
+server.get('/api/users',logger, (req, res) => {
     Users.get().then(users => res.status(200).json(users))
 });
 
-server.get('/api/users/:id', (req, res) => {
+server.get('/api/users/:id' ,logger, validateUserId, (req, res) => {
     const id = req.params.id;
     Users.getById(id).then(users => res.status(200).json(users))
 });
 
-server.get('/api/users/:id/posts', (req, res) => {
+server.get('/api/users/:id/posts',logger, validateUserId, (req, res) => {
     const id = req.params.id;
     Users.getUserPosts(id).then(users => res.status(200).json(users))
 });
 
-server.post('/api/users', (req, res) => {
+server.post('/api/users',logger,validateUser, (req, res) => {
     const user = req.body;
     Users.insert(user).then(r => console.log(r))
 });
 
-server.put('/api/users/:id', (req, res) => {
+server.put('/api/users/:id',logger, validatePost, validatePost, (req, res) => {
     const id = req.params.id;
     const changes = req.body;
     Users.update(id, changes).then(r => console.log(r))
 });
 
-server.delete('/api/users/:id', (req, res) => {
+server.delete('/api/users/:id',logger,validateUserId, (req, res) => {
     const id = req.params.id;
     Users.remove(id)
 });
